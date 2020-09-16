@@ -52,7 +52,7 @@ function list_to_tree() {
 
   $('#tree_issue_project_id').val($('#issue_project_id > option:selected').text());
 
-
+    /*
     $('body').click(function() {
       console.log('body click');
       if (!$('.tree').is(":hidden")) {
@@ -60,6 +60,7 @@ function list_to_tree() {
         event.stopPropagation();
       }
     });
+    */
 
     $('#tree_issue_project_id_filter').click(function(e) {
       console.log('tree_issue_project_id_filter click');
@@ -70,6 +71,8 @@ function list_to_tree() {
     $('#tree_issue_project_id').click(function(e) {
       console.log('tree_issue_project_id click');
       $('.tree').toggle();
+
+      $('.tree').css('width', $('#tree_issue_project_id').css('width'));
 
       var node = tree.tree('getNodeById', $('#issue_project_id > option:selected').val());
       console.log(node);
@@ -145,15 +148,18 @@ function list_to_tree() {
     }, 50);
   });
 
-  var node = tree.tree('getNodeById', $('#issue_project_id > option:selected').val());
-  tree.tree('selectNode', node); 
+  v = $('#issue_project_id > option:selected').val();
+  if (v != undefined)  {
+    var node = tree.tree('getNodeById', v);
+    tree.tree('selectNode', node); 
 
-  node.iterate(function(child) {
-    if (child.isFolder()) {
-      $tree.tree('openNode', child);
-    }
-    return true;
-  });   
+    node.iterate(function(child) {
+      if (child.isFolder()) {
+        tree.tree('openNode', child);
+      }
+      return true;
+    });   
+  }  
 
   return roots;
 }      
